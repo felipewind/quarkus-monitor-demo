@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+
+  quarkus:
+    image: felipewind/quarkus-monitor-demo:1.0-${QUARKUS_MODE:-jvm}
+    build:
+      context: quarkus
+      dockerfile: src/main/docker/Dockerfile.${QUARKUS_MODE:-jvm}
+    network_mode: "host"
+    # depends_on:
+    #   - kafka
+    # environment:
+    #   KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - "8080:8080"
+    # networks:
+    #   - quarkus-monitor-demo-network
+
+# networks:
+#   quarkus-monitor-demo-network:
+#     name: kafkaquickstart
