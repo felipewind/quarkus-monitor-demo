@@ -1,5 +1,7 @@
 package org.acme;
 
+import java.util.Random;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,8 +16,10 @@ public class GreetingResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        LOG.info("hello()");
+    public String hello() throws InterruptedException {
+        LOG.info("hello() before sleep");
+        Thread.sleep(new Random().nextInt(2000));
+        LOG.info("hello() after sleep");
         return "Hello RESTEasy";
     }
 }

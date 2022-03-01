@@ -21,9 +21,7 @@ providers:
   allowUiUpdates: true
   options:
     # <string, required> path to dashboard files on disk. Required
-    path: /etc/grafana/provisioning/dashboards/study.json
-    # path: /etc/grafana/provisioning/dashboards/jvm-quarkus-micrometers.json
-
+    path: /etc/grafana/provisioning/dashboards
 
 #apiVersion: 1
 

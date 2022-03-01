@@ -26,4 +26,6 @@ scrape_configs:
       labels:
        service: "quarkus-monitor-demo"
        endpoint: "quarkus-monitor-demo-http"
+       namespace: "quarkus-monitor-demo"
+       env: "prod"       
 

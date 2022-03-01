@@ -2,18 +2,18 @@ version: '3.5'
 
 services:
 
-  quarkus:
-    image: felipewind/quarkus-monitor-demo:1.0-${QUARKUS_MODE:-jvm}
-    build:
-      context: quarkus
-      dockerfile: src/main/docker/Dockerfile.${QUARKUS_MODE:-jvm}
-    # environment:
-    #   KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-    network_mode: "host"
-    ports:
-      - "8080:8080"
-    # networks:
-    #   - quarkus-monitor-demo-network
+  # quarkus:
+  #   image: felipewind/quarkus-monitor-demo:1.0-${QUARKUS_MODE:-jvm}
+  #   build:
+  #     context: quarkus
+  #     dockerfile: src/main/docker/Dockerfile.${QUARKUS_MODE:-jvm}
+  #   # environment:
+  #   #   KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #   network_mode: "host"
+  #   ports:
+  #     - "8080:8080"
+  #   # networks:
+  #   #   - quarkus-monitor-demo-network
 
   prometheus:
     image: prom/prometheus:latest
@@ -23,9 +23,9 @@ services:
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
-    #   - '--storage.tsdb.path=/prometheus'
-    #   - '--web.console.libraries=/etc/prometheus/console_libraries'
-    #   - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
     network_mode: "host"
     ports:
       - "9090:9090"
