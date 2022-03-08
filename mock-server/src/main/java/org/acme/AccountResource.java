@@ -28,13 +28,13 @@ public class AccountResource {
 
         LOG.info("get() " + id);
 
-        var account = new Account(UUID.randomUUID().toString(), "BankBoston");
+        var account = new Account(id, "BankBoston");
 
         var delay = delay();
 
         return Response
                 .status(Status.OK)
-                .header("delay-test", delay)
+                .header("delay-time", delay)
                 .entity(account)
                 .build();
 
@@ -53,7 +53,7 @@ public class AccountResource {
 
         return Response
                 .status(Status.OK)
-                .header("delay-test", delay)
+                .header("delay-time", delay)
                 .entity(accountBallance)
                 .build();
 
@@ -84,7 +84,7 @@ public class AccountResource {
 
         return Response
                 .status(Status.OK)
-                .header("delay-test", delay)
+                .header("delay-time", delay)
                 .entity(accountTransactions)
                 .build();
 
