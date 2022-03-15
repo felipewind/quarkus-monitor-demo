@@ -37,6 +37,8 @@ services:
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
       - grafana_data:/data
+    environment:
+      GF_SERVER_HTTP_ADDR: "localhost"
     network_mode: "host"
     ports:
       - 3000:3000
