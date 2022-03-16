@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.faulttolerance.Asynchronous;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
@@ -25,26 +26,47 @@ public class AccountExtractorService {
     @Inject
     AccountResource accountResource;
 
-    void extractionProcess(int quantity) {
-        LOG.info("Extraction thread pool: " + extractionThreadPool);
+    // @Asynchronous
+    @Bulkhead(value = 1)
+    Future<String> extractionProcess(int quantity) {
+        LOG.info("Extraction thread pool size: " + extractionThreadPool);
 
         accountQueue.clear();
 
         for (int i = 1; i <= quantity; i++) {
-            accountQueue.offer(i + "");
+            extractAccount(i + "");
+            // accountQueue.offer(i + "");
         }
 
-        for (int i = 0; i < extractionThreadPool; i++) {
-            processQueue();
-        }
+        LOG.info("finish");
 
-        LOG.info("All extraction threads were started");
+        // LOG.info("Processes sent to Queue");
+
+        // var threadReturnFuture = new ArrayList<Future<Integer>>();
+
+        // for (int i = 0; i < extractionThreadPool; i++) {
+        //     threadReturnFuture.add(processQueue());
+        // }
+
+        // LOG.info("All extraction threads were started, waiting for completion of them");
+
+        // threadReturnFuture.forEach(f -> {
+        //     try {
+        //         f.get(5L, TimeUnit.MINUTES);
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     }
+        // });
+
+        // LOG.info("All extraction threads finished");
+
+        return CompletableFuture.completedFuture("Process started");
 
     }
 
     @Asynchronous
     Future<Integer> processQueue() {
-        LOG.info("Extraction STARTED ");
+        LOG.info("Extraction thread STARTED ");
 
         var quantityAccountsProcessed = 0;
 
@@ -56,7 +78,7 @@ public class AccountExtractorService {
             id = accountQueue.poll();
         }
 
-        LOG.info("Extraction FINISHED, total accounts processed = " + quantityAccountsProcessed);
+        LOG.info("Extraction thread FINISHED, total accounts processed = " + quantityAccountsProcessed);
 
         return CompletableFuture.completedFuture(quantityAccountsProcessed);
 
@@ -68,7 +90,6 @@ public class AccountExtractorService {
         accountResource.getBalances(id);
         accountResource.getTransactions(id);
         LOG.info("Extraction id " + id + " FINISHED ");
-
     }
 
 }

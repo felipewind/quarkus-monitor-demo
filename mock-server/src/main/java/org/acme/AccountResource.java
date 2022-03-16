@@ -26,11 +26,15 @@ public class AccountResource {
     @Path("{id}")
     public Response get(@Parameter(example = "1") @PathParam("id") String id) throws InterruptedException {
 
-        LOG.info("get() " + id);
+        var delay = new Random().nextInt(2000);
+
+        LOG.info("get() id = " + id + " delay = " + delay);
+
+        Thread.sleep(delay);
 
         var account = new Account(id, "BankBoston");
 
-        var delay = delay();
+        LOG.info("get() id = " + id + " delay = " + delay + " RESPONSE");
 
         return Response
                 .status(Status.OK)
@@ -44,12 +48,14 @@ public class AccountResource {
     @Path("{id}/balances")
     public Response getBalances(@Parameter(example = "1") @PathParam("id") String id) throws InterruptedException {
 
-        LOG.info("getBalances() " + id);
+        var delay = new Random().nextInt(2000);
+
+        LOG.info("getBalances() " + id + " delay = " + delay);
 
         var accountBallance = new AccountBallance(new BigDecimal(new Random().nextInt(200)),
                 new BigDecimal(new Random().nextInt(10)));
 
-        var delay = delay();
+        LOG.info("getBalances() " + id + " delay = " + delay + " RESPONSE");
 
         return Response
                 .status(Status.OK)
@@ -63,7 +69,9 @@ public class AccountResource {
     @Path("{id}/transactions")
     public Response getTransactions(@Parameter(example = "1") @PathParam("id") String id) throws InterruptedException {
 
-        LOG.info("getTransactions() " + id);
+        var delay = new Random().nextInt(2000);
+
+        LOG.info("getTransactions() " + id + " delay = " + delay);
 
         var limit = new Random().nextInt(10);
 
@@ -80,7 +88,7 @@ public class AccountResource {
 
         var accountTransactions = new AccountTransactions(listAccountTransactions);
 
-        var delay = delay();
+        LOG.info("getTransactions() " + id + " delay = " + delay + " RESPONSE");
 
         return Response
                 .status(Status.OK)
@@ -88,12 +96,6 @@ public class AccountResource {
                 .entity(accountTransactions)
                 .build();
 
-    }
-
-    private int delay() throws InterruptedException {
-        var delay = new Random().nextInt(2000);
-        Thread.sleep(delay);
-        return delay;
     }
 
 }
