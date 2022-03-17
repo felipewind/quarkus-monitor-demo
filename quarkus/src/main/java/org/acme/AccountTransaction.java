@@ -9,6 +9,9 @@ public class AccountTransaction {
     public String creditDebitType;
     public BigDecimal amount;
 
+    public AccountTransaction() {        
+    }
+    
     public AccountTransaction(String transactionId, String type, String creditDebitType, BigDecimal amount) {
         this.transactionId = transactionId;
         this.type = type;

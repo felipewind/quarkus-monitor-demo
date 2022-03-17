@@ -1,9 +1,11 @@
 package org.acme;
 
+import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,7 +28,7 @@ public class AccountExtractorService {
     @Inject
     AccountResource accountResource;
 
-    // @Asynchronous
+    @Asynchronous
     @Bulkhead(value = 1)
     Future<String> extractionProcess(int quantity) {
         LOG.info("Extraction thread pool size: " + extractionThreadPool);
@@ -34,31 +36,30 @@ public class AccountExtractorService {
         accountQueue.clear();
 
         for (int i = 1; i <= quantity; i++) {
-            extractAccount(i + "");
-            // accountQueue.offer(i + "");
+            accountQueue.offer(i + "");
         }
 
         LOG.info("finish");
 
-        // LOG.info("Processes sent to Queue");
+        LOG.info("Processes sent to Queue");
 
-        // var threadReturnFuture = new ArrayList<Future<Integer>>();
+        var threadReturnFuture = new ArrayList<Future<Integer>>();
 
-        // for (int i = 0; i < extractionThreadPool; i++) {
-        //     threadReturnFuture.add(processQueue());
-        // }
+        for (int i = 0; i < extractionThreadPool; i++) {
+            threadReturnFuture.add(processQueue());
+        }
 
-        // LOG.info("All extraction threads were started, waiting for completion of them");
+        LOG.info("All extraction threads were started, waiting for completion of them");
 
-        // threadReturnFuture.forEach(f -> {
-        //     try {
-        //         f.get(5L, TimeUnit.MINUTES);
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-        // });
+        threadReturnFuture.forEach(f -> {
+            try {
+                f.get(5L, TimeUnit.MINUTES);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-        // LOG.info("All extraction threads finished");
+        LOG.info("All extraction threads finished");
 
         return CompletableFuture.completedFuture("Process started");
 

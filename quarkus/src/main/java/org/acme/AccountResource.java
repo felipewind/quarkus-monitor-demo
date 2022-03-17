@@ -31,6 +31,8 @@ public class AccountResource {
 
         var response = mockInterface.get(id);
 
+        response.readEntity(Account.class);
+
         LOG.info("get() http status code = " + response.getStatus());
 
         return response;
@@ -43,6 +45,8 @@ public class AccountResource {
 
         var response = mockInterface.getBalances(id);
 
+        response.readEntity(AccountBallance.class);
+
         LOG.info("getBalances() http status code = " + response.getStatus());
 
         return response;
@@ -54,6 +58,8 @@ public class AccountResource {
         LOG.info("getTransactions() id " + id);
 
         var response = mockInterface.getTransactions(id);
+
+        response.readEntity(AccountTransactions.class);
 
         LOG.info("getTransactions() http status code = " + response.getStatus());
 
