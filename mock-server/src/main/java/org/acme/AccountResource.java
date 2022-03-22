@@ -26,7 +26,7 @@ public class AccountResource {
     @Path("{id}")
     public Response get(@Parameter(example = "1") @PathParam("id") String id) throws InterruptedException {
 
-        var delay = new Random().nextInt(2000);
+        var delay = new Random().nextInt(1000);
 
         LOG.info("get() id = " + id + " delay = " + delay);
 
@@ -52,6 +52,8 @@ public class AccountResource {
 
         LOG.info("getBalances() " + id + " delay = " + delay);
 
+        Thread.sleep(delay);
+
         var accountBallance = new AccountBallance(new BigDecimal(new Random().nextInt(200)),
                 new BigDecimal(new Random().nextInt(10)));
 
@@ -69,9 +71,11 @@ public class AccountResource {
     @Path("{id}/transactions")
     public Response getTransactions(@Parameter(example = "1") @PathParam("id") String id) throws InterruptedException {
 
-        var delay = new Random().nextInt(2000);
+        var delay = new Random().nextInt(3000);
 
         LOG.info("getTransactions() " + id + " delay = " + delay);
+
+        Thread.sleep(delay);
 
         var limit = new Random().nextInt(10);
 

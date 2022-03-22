@@ -2,6 +2,7 @@ package org.acme;
 
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
@@ -86,10 +87,22 @@ public class AccountExtractorService {
     }
 
     private void extractAccount(String id) {
-        LOG.info("Extraction id " + id + " STARTED ");
-        accountResource.get(id);
+
+        var getId = new Random().nextInt(2);
+        var getTransactions = new Random().nextInt(4);
+
+        LOG.info("Extraction id " + id + " STARTED " + " getID = " + getId + " getTransactions = " + getTransactions);
+
+        if (getId == 1) {
+            accountResource.get(id);
+        }
+
         accountResource.getBalances(id);
-        accountResource.getTransactions(id);
+
+        for (int i = 0; i < getTransactions; i++) {
+            accountResource.getTransactions(id);
+        }
+
         LOG.info("Extraction id " + id + " FINISHED ");
     }
 

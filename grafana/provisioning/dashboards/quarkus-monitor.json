@@ -107,7 +107,7 @@
           "refId": "A"
         }
       ],
-      "title": "Accounts ID - Transactions per minute",
+      "title": "Accounts ID - Transactions per second on the last 1 minute",
       "type": "timeseries"
     },
     {
@@ -185,7 +185,7 @@
             "uid": "P04A5BAFA65EC02E3"
           },
           "exemplar": true,
-          "expr": "dependency_request_seconds_sum{addr=\"/accounts/{id}\"}",
+          "expr": "sum(sum_over_time(dependency_request_seconds_sum{addr=\"/accounts/{id}\"}[1m]))\r\n/\r\nsum(sum_over_time(dependency_request_seconds_count{addr=\"/accounts/{id}\"}[1m]))",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -523,6 +523,6 @@
   "timezone": "",
   "title": "Quarkus Monitor",
   "uid": "YE0i9eL7k",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
